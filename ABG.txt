@@ -1,0 +1,187 @@
+#pragma mode(separator(,;;) integer(h32))
+EXPORT Ph;pCO2;HCO3;Na;Cl;AGAP;
+
+acid1();
+acid2();
+acid3();
+acid4();
+acid5();
+alc1();
+alc2();
+alc3();
+alc4();
+alc5();
+Arac();
+Amac();
+agap();
+Aralc();
+Amalc();
+
+EXPORT ABG()
+BEGIN
+L0:={
+"Compensated Metaboloc Acidosis";
+"Uncompensated Metabolic Acidosis";
+"Metabolic Acidosis and Respiratory Alcalosis";
+"Acute Respiratory Acidosis over Chronic Respiratory Acidosis";
+"Uncompensated Acute Respiratory Acidosis";
+"Compensated Chronic Respiratory Acidosis";
+"Metabolic Acidosis with Anion Gap";
+"Metabolic Acidosis with Anion Gap and Acidosis without Anion Gap";
+"Metabolic Acidosis with Anion Gap and Metabolic Acidosis";
+"Compensated Metabolic Acidosis";
+"Metabolic Acidosis and Respiratory Acidosis";
+"Metabolic Alcalosis and Respiratory Alcalosis";
+"Partially Compensated Respiratory Alcalosis";
+"Compensated Chronic Respiratory Alcalosis";
+"Uncompensated Acute Respiratory Alcalosis";
+"Partially Compensated Respiratory Acidosis";
+"Partially Compensated Metabolic Acidosis";
+"Partially Compensated Metabolic Alcalosis";
+"Uncompensated Metabolic Alcalosis";
+"Normal OR Compensated Respiratory Acidosis OR Compensated Metabolic Alcalosis";
+"Normal OR Compensated Respiratory Alcalosis OR Compensated Metabolic Acidosis";
+"Normal"};
+
+input({Ph;pCO2;HCO3;Na;Cl};"ABG Calculator";{"Ph";"pCO2";"HCO3";"Na";"Cl"};{Ph;pCO2;HCO3;Na;Cl});
+print();
+print("ABG Calculator results for...\nPh="+Ph+"\npCO2="+pCO2+"\nHCO3="+HCO3+"\nNa="+Na+"\nCl="+Cl+"\n");
+
+if HCO3=24 then HCO3:=23,01 end;
+if Ph<7 or Ph>7,7 then
+print("Is it alive?");
+return
+end;
+
+AGAP:=Na-Cl-HCO3;
+
+if (Ph<7,35 and HCO3>26) then acid1() end;
+if Ph<7,35 and HCO3<=26 and HCO3>=22 then acid2() end;
+if Ph<7,35 and HCO3<22 and pCO2>60 then acid3() end;
+if Ph<7,35 and HCO3<22 and pCO2<47 then acid4() end;
+if Ph<7,35 and HCO3<22 and pCO2<=60 and pCO2>=47 then acid5() end;
+
+if Ph>=7,35 and Ph<=7,45 and HCO3>26 then print(L0(20))
+else if Ph>=7,35 and Ph<=7,45 and HCO3<=22 then print(L0(21))
+else if Ph>=7,35 and Ph<=7,45 and HCO3>22 and HCO3<=16 then print(L0(22))
+end end end;
+
+if Ph>=7,45 and HCO3>26 and pCO2>60 then alc3() end;
+if Ph>=7,45 and HCO3<22 then alc1() end;
+if Ph>=7,45 and HCO3<=26 and HCO3>=22 then alc2() end;
+if Ph>=7,45 and HCO3>26 and pCO2<47 then alc4() end;
+if Ph>=7,45 and HCO3>26 and pCO2>=47 then alc5() end;
+
+END;
+
+acid1()
+BEGIN
+print(L0(16));
+Arac();
+END;
+
+acid2()
+BEGIN
+print(L0(5));
+Arac();
+END;
+
+acid3()
+BEGIN
+print(L0(11));
+Arac();
+END;
+
+acid4()
+BEGIN
+print(L0(17));
+Amac();
+END;
+
+acid5()
+BEGIN
+print(L0(2));
+Amac();
+END;
+
+Amac()
+BEGIN
+local x:=1,5*HCO3+8-pCO2;
+if x<=-0,5 then print(L0(2))
+else if x>=0,5 then print(L0(12))
+else print(L0(1))
+end end;
+END;
+
+Arac()
+BEGIN
+local y:=pCO2;
+if y=40 then y:=40,01 end;
+local x:=(10^(9-Ph)-10^1,6)/(y-40);
+if x>0,8 then print(L0(4))
+else if x<0,3 then print(L0(6))
+else print(L0(5))
+end end;
+END;
+
+agap()
+BEGIN
+if AGAP<16 then return end;
+local y:=HCO3;
+if y=24 then y:=24,01 end;
+local x:=(AGAP-12)/(24-y);
+if x<1 then print(L0(8))
+else if x>2 then print(L0(9))
+else print(L0(7))
+end end;
+END;
+
+alc1()
+BEGIN
+print(L0(13));
+Aralc();
+END;
+
+alc2()
+BEGIN
+print(L0(15));
+Aralc();
+END;
+
+alc3()
+BEGIN
+print(L0(18));
+Amalc();
+END;
+
+alc4()
+BEGIN
+print(L0(3));
+Aralc();
+END;
+
+alc5()
+BEGIN
+print(L0(19));
+Amalc();
+END;
+
+Aralc()
+BEGIN
+local y:=pCO2;
+if y=40 then y:=40,01 end;
+local x:=(Ph-7,4)/(40-y);
+if x<0,0017 then print(L0(14))
+else if x>0,008 then print(L0(15))
+else print(L0(13))
+end end;
+END;
+
+Amalc()
+BEGIN
+local x:=0,7*HCO3+21-pCO2;
+if x<-5 then print(L0(11))
+else if x>5 then print(L0(12))
+else print(L0(10))
+end end;
+END;
