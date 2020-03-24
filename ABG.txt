@@ -63,7 +63,7 @@ if Ph<7,35 and HCO3<22 and pCO2<=60 and pCO2>=47 then acid5() end;
 
 if Ph>=7,35 and Ph<=7,45 and HCO3>26 then print(L0(20))
 else if Ph>=7,35 and Ph<=7,45 and HCO3<=22 then print(L0(21))
-else if Ph>=7,35 and Ph<=7,45 and HCO3>22 and HCO3<=16 then print(L0(22))
+else if Ph>=7,35 and Ph<=7,45 and HCO3>22 and HCO3<=26 then print(L0(22))
 end end end;
 
 if Ph>=7,45 and HCO3>26 and pCO2>60 then alc3() end;
