@@ -47,7 +47,7 @@ input({Ph;pCO2;HCO3;Na;Cl};"ABG Calculator";{"Ph";"pCO2";"HCO3";"Na";"Cl"};{Ph;p
 print();
 print("ABG Calculator results for...\nPh="+Ph+"\npCO2="+pCO2+"\nHCO3="+HCO3+"\nNa="+Na+"\nCl="+Cl+"\n");
 
-if HCO3=24 then HCO3:=23,01 end;
+if HCO3=24 then HCO3:=24,01 end;
 if Ph<7 or Ph>7,7 then
 print("Is it alive?");
 return
