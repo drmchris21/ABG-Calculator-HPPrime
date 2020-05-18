@@ -1,4 +1,4 @@
-#pragma mode(separator(,;;) integer(h32))
+#pragma mode( separator(,;;) integer(h32) )
 
 abg:={
 "Compensated Metaboloc Acidosis";
@@ -19,12 +19,13 @@ abg:={
 "Partially Compensated Respiratory Acidosis";
 "Partially Compensated Metabolic Acidosis";
 "Partially Compensated Metabolic Alcalosis";
-"Uncompensated Metabolic Alcalosis";
+"Uncompensated MetabolicAlcalosis";
 "Normal OR Compensated Respiratory Acidosis OR Compensated Metabolic Alcalosis";
 "Normal OR Compensated Respiratory Alcalosis OR Compensated Metabolic Acidosis";
 "Normal"};
-Ph:=7,4;pCO2:=40;HCO3:=24;
-Na:=140;Cl:=100;AGAP;Alb:=4,5;
+
+Ph;pCO2;HCO3;
+Na;Cl;AGAP;Alb;
 
 acid1();
 acid2();
@@ -42,21 +43,21 @@ agap();
 Aralc();
 Amalc();
 
-EXPORT ABG()
+EXPORT ABG(Ph_;pCO2_;HCO3_;Na_;Cl_;Alb_)
 BEGIN
-INPUT({Ph; pCO2; HCO3; Na; Cl; Alb};
-"ABG Calculator");
+Ph:=Ph_; pCO2:=pCO2_;
+HCO3:=HCO3_; Na:=Na_;
+Cl:=Cl_; Alb:=Alb_;
 PRINT();
 PRINT("ABG Calculator results for...\nPh="+Ph+"\npCO2="+pCO2+"\nHCO3="+HCO3+"\nNa="+Na+"\nCl="+Cl+"\n");
 PRINT("Albumin="+Alb+"\n");
 
-HCO3:=IFTE(HCO3=24;24,01;HCO3);
 IF Ph<7 OR Ph>7,7 THEN
 PRINT("Is it alive?");
 RETURN;
 END;
 
-AGAP:=Na-Cl-HCO3+2,5*(MAX(0;4,5-Alb));
+AGAP:=Na-Cl-HCO3+2,3*(MAX(0;4,5-Alb));
 
 (Ph<7,35 and HCO3>26)AND(acid1);
 (Ph<7,35 and HCO3<=26 AND HCO3>=22)AND(acid2);
@@ -116,6 +117,8 @@ END END;
 IF AGAP<16 THEN RETURN; END;
 LOCAL y:=IFTE(HCO3==24;24,01;HCO3);
 x:=(AGAP-12)/(24-y);
+PRINT("AG="+AGAP);
+PRINT("x="+x);
 IF x<1 THEN PRINT(abg(8))
 ELSE IF x>2 THEN PRINT(abg(9))
 ELSE PRINT(abg(7))
@@ -124,11 +127,11 @@ END;
 
 Arac()
 BEGIN
-LOCAL y:=IFTE(pCO2==40;40,02;pCO2);
+LOCAL y:=IFTE(pCO2==40;40,01;pCO2);
 LOCAL x:=(10^(9-Ph)-10^1,6)/(y-40);
-IF x>0,8 THEN PRINT(abg(4))
+IF x>0,8 THEN PRINT(abg(5))
 ELSE IF x<0,3 THEN PRINT(abg(6))
-ELSE PRINT(abg(5))
+ELSE PRINT(abg(4))
 END END;
 END;
 
