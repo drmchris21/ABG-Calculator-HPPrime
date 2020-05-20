@@ -3,14 +3,14 @@
 abg:={
 "Compensated Metaboloc Acidosis";
 "Uncompensated Metabolic Acidosis";
-"Metabolic Acidosis and Respiratory Alcalosis";
+"Metabolic Acidosis with Respiratory Alcalosis";
 "Acute Respiratory Acidosis over Chronic Respiratory Acidosis";
 "Uncompensated Acute Respiratory Acidosis";
 "Compensated Chronic Respiratory Acidosis";
 "Metabolic Acidosis with Anion Gap";
 "Metabolic Acidosis with Anion Gap and Acidosis without Anion Gap";
 "Metabolic Acidosis with Anion Gap and Metabolic Acidosis";
-"Compensated Metabolic Acidosis";
+"Compensated Metabolic Alcalosis";
 "Metabolic Acidosis and Respiratory Acidosis";
 "Metabolic Alcalosis and Respiratory Alcalosis";
 "Partially Compensated Respiratory Alcalosis";
@@ -19,7 +19,7 @@ abg:={
 "Partially Compensated Respiratory Acidosis";
 "Partially Compensated Metabolic Acidosis";
 "Partially Compensated Metabolic Alcalosis";
-"Uncompensated MetabolicAlcalosis";
+"Uncompensated Metabolic Alcalosis";
 "Normal OR Compensated Respiratory Acidosis OR Compensated Metabolic Alcalosis";
 "Normal OR Compensated Respiratory Alcalosis OR Compensated Metabolic Acidosis";
 "Normal"};
@@ -155,7 +155,7 @@ END;
 
 alc4()
 BEGIN
-PRINT(abg(3));
+PRINT(abg(12));
 Aralc();
 END;
 
@@ -178,7 +178,7 @@ END;
 Amalc()
 BEGIN
 LOCAL x:=0,7*HCO3+21-pCO2;
-IF x<-5 THEN PRINT(abg(11))
+IF x<-5 THEN PRINT(abg(3))
 ELSE IF x>5 THEN PRINT(abg(12))
 ELSE PRINT(abg(10))
 END END;
